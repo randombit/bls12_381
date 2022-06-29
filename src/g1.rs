@@ -188,7 +188,7 @@ const B: Fp = Fp::from_raw_unchecked([
     0x09d6_4551_3d83_de7e,
 ]);
 
-const BETA: Fp = Fp::from_raw_unchecked([
+const MBETA: Fp = Fp::from_raw_unchecked([
     0xCD03_C9E4_8671_F071,
     0x5DAB_2246_1FCD_A5D2,
     0x5870_42AF_D385_1B95,
@@ -892,13 +892,13 @@ impl G1Projective {
             // Negate point if either k2 or naf2[i] is negative.
             let flag = sign ^ s2;
             t = G1Affine::conditional_select(&t, &-t, Choice::from(-flag as u8));
-            t.x = t.x * BETA;
+            t.x = t.x * MBETA;
             acc = acc + t;
         }
         // If the subscalars were even, fix result here.
         let t = G1Affine::conditional_select(&table[0], &-table[0], Choice::from(-s1 as u8));
         acc = G1Projective::conditional_select(&acc, &(acc - t), Choice::from(1u8 - bit1));
-        table[0].x = table[0].x * BETA;
+        table[0].x = table[0].x * MBETA;
         let t = G1Affine::conditional_select(&table[0], &-table[0], Choice::from(-s2 as u8));
         G1Projective::conditional_select(&acc, &(acc - t), Choice::from(1u8 - bit2))
     }
